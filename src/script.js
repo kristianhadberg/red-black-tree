@@ -1,9 +1,18 @@
 import RedBlackTree from "./red-black-tree.js";
 
 let tree;
-start();
+init();
 
-function start() {
+function init() {
+  const insertForm = document.querySelector("#insert-form");
+
+  insertForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const number = insertForm.number.valueAsNumber;
+    tree.insert(number);
+    generateVisualTree();
+  });
+
   tree = new RedBlackTree();
   tree.insert(8);
   tree.insert(5);
