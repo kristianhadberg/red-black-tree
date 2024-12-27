@@ -287,4 +287,53 @@ export default class RedBlackTree {
     console.log(node.value);
     this.traverse(node.right);
   }
+
+  bfs() {
+    if (this.root == null) return;
+
+    const queue = [];
+    queue.push(this.root);
+
+    const list = [];
+
+    while (queue.length > 0) {
+      const item = queue.shift();
+
+      console.log(item);
+      console.log(this.depth(item));
+      list.push({
+        value: item.value,
+        color: item.color,
+        depth: this.depth(item),
+      });
+
+      if (item.left && item.left != this.NIL) queue.push(item.left);
+      if (item.right && item.right != this.NIL) queue.push(item.right);
+    }
+    console.log(list);
+  }
+
+  depth(node) {
+    let depth = 0;
+
+    const queue = [];
+    queue.push(this.root);
+
+    while (queue.length > 0) {
+      const queueLength = queue.length;
+      for (let i = 0; i < queueLength; i++) {
+        const frontNode = queue.shift();
+        if (frontNode == node) {
+          return depth;
+        }
+        if (frontNode.left != null) {
+          queue.push(frontNode.left);
+        }
+        if (frontNode.right != null) {
+          queue.push(frontNode.right);
+        }
+      }
+      depth++;
+    }
+  }
 }
