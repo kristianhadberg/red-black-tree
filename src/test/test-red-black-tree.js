@@ -1,4 +1,4 @@
-import RedBlackTree from "./red-black-tree.js";
+import RedBlackTree from "../red-black-tree.js";
 
 const tree = new RedBlackTree();
 tree.insert(5);
