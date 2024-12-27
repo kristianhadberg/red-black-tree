@@ -77,6 +77,10 @@ export default class RedBlackTree {
     while (currentNode != this.NIL) {
       parent = currentNode;
 
+      if (newNode.value == currentNode.value) {
+        return;
+      }
+
       // Move left or right in tree depending value compared to the current node
       if (newNode.value < currentNode.value) {
         currentNode = currentNode.left;
