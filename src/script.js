@@ -53,7 +53,7 @@ function init() {
   generateVisualTree();
 }
 
-function generateVisualTree(showNil = true) {
+function generateVisualTree() {
   if (tree.root == null) return;
 
   const initialUl = document.querySelector(".initial-ul");

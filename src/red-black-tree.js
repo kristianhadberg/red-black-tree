@@ -22,45 +22,47 @@ export default class RedBlackTree {
 
   rotateLeft(rotatingNode) {
     const pivotNode = rotatingNode.right;
-    const parentNode = rotatingNode.parent;
+    rotatingNode.right = pivotNode.left;
 
-    pivotNode.parent = parentNode;
-    // if parentNode is root of tree
-    if (parentNode == null) {
-      this.root = pivotNode;
-    } else if (rotatingNode == parentNode.right) {
-      // Set the grandparents left/right to match after the rotation
-      parentNode.right = pivotNode;
-    } else {
-      parentNode.left = pivotNode;
+    if (pivotNode.left != this.NIL) {
+      pivotNode.left.parent = rotatingNode;
     }
 
-    const pivotRightNode = pivotNode.left;
-    rotatingNode.right = pivotRightNode;
+    pivotNode.parent = rotatingNode.parent;
+
+    if (rotatingNode.parent == null) {
+      this.root = pivotNode;
+    } else if (rotatingNode == rotatingNode.parent.left) {
+      rotatingNode.parent.left = pivotNode;
+    } else {
+      rotatingNode.parent.right = pivotNode;
+    }
+
     pivotNode.left = rotatingNode;
     rotatingNode.parent = pivotNode;
   }
 
   /* 
-    Rotating node is the pivotNodes parent node, and pivot node is the node that will become the new parent
-  */
+        Rotating node is the pivotNodes parent node, and pivot node is the node that will become the new parent
+    */
   rotateRight(rotatingNode) {
     const pivotNode = rotatingNode.left;
-    const parentNode = rotatingNode.parent;
+    rotatingNode.left = pivotNode.right;
 
-    pivotNode.parent = parentNode;
-    // if parentNode is root of tree
-    if (parentNode == null) {
-      this.root = pivotNode;
-    } else if (rotatingNode == parentNode.right) {
-      // Set the grandparents left/right to match after the rotation
-      parentNode.right = pivotNode;
-    } else {
-      parentNode.left = pivotNode;
+    if (pivotNode.right != this.NIL) {
+      pivotNode.right.parent = rotatingNode;
     }
 
-    const pivotRightNode = pivotNode.right;
-    rotatingNode.left = pivotRightNode;
+    pivotNode.parent = rotatingNode.parent;
+
+    if (rotatingNode.parent == null) {
+      this.root = pivotNode;
+    } else if (rotatingNode == rotatingNode.parent.right) {
+      rotatingNode.parent.right = pivotNode;
+    } else {
+      rotatingNode.parent.left = pivotNode;
+    }
+
     pivotNode.right = rotatingNode;
     rotatingNode.parent = pivotNode;
   }
@@ -103,6 +105,8 @@ export default class RedBlackTree {
   }
 
   insertFixup(violatingNode) {
+    // z = violating node
+    // y = uncle
     while (violatingNode.parent && violatingNode.parent.color == "RED") {
       // left side cases
       if (violatingNode.parent == violatingNode.parent.parent.left) {
@@ -161,7 +165,8 @@ export default class RedBlackTree {
       console.log(`Value ${value} not found in the tree`);
       return `Value ${value} not found in the tree`;
     }
-    let nodeOriginalColor = node.color;
+    let nodeToBeDeleted = node;
+    let nodeOriginalColor = nodeToBeDeleted.color;
 
     let nodeToBeFixed;
     let minimumNodeRightChild;
@@ -177,19 +182,21 @@ export default class RedBlackTree {
       this.transplant(node, node.left);
     } else {
       /* 
-        case 3, neither are NIL
-        find minimum value in the node to be deleted's right sub tree 
-    */
+            case 3, neither are NIL
+            find minimum value in the node to be deleted's right sub tree 
+        */
       const minimumNodeInRightSubTree = this.minimum(node.right);
       nodeOriginalColor = minimumNodeInRightSubTree.color;
-      minimumNodeRightChild = minimumNodeInRightSubTree.right;
-      nodeToBeFixed = minimumNodeRightChild;
+      nodeToBeFixed = minimumNodeInRightSubTree.right;
 
       // if the minimum node is the direct child of the node to be deleted
-      if (minimumNodeInRightSubTree.parent == node) {
-        minimumNodeRightChild.parent = minimumNodeInRightSubTree;
+      if (minimumNodeInRightSubTree.right.parent == node) {
+        nodeToBeFixed.parent = minimumNodeInRightSubTree;
       } else {
-        this.transplant(minimumNodeInRightSubTree, minimumNodeRightChild);
+        this.transplant(
+          minimumNodeInRightSubTree,
+          minimumNodeInRightSubTree.right
+        );
         minimumNodeInRightSubTree.right = node.right;
         minimumNodeInRightSubTree.right.parent = minimumNodeInRightSubTree;
       }
@@ -277,9 +284,9 @@ export default class RedBlackTree {
   }
 
   /* 
-    Helper function to swap nodes within a subtree
-    Used for deleting nodes
-  */
+        Helper function to swap nodes within a subtree
+        Used for deleting nodes
+      */
   transplant(firstNode, secondNode) {
     if (firstNode.parent == null) {
       // firstNode is root
@@ -293,8 +300,8 @@ export default class RedBlackTree {
   }
 
   /* 
-    Find the lowest value in the given subtree
-  */
+        Find the lowest value in the given subtree
+      */
   minimum(node) {
     while (node.left != this.NIL) {
       node = node.left;
@@ -303,8 +310,8 @@ export default class RedBlackTree {
   }
 
   /* 
-    Find a specific value in the tree
-  */
+        Find a specific value in the tree
+      */
   search(value) {
     let currentNode = this.root;
 
