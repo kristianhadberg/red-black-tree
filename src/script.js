@@ -54,6 +54,7 @@ function init() {
 }
 
 function generateVisualTree() {
+  console.log(tree);
   if (tree.root == null) return;
 
   const initialUl = document.querySelector(".initial-ul");

@@ -21,6 +21,8 @@ export default class RedBlackTree {
   }
 
   rotateLeft(rotatingNode) {
+    // x = rotating node
+    // y = pivotNode
     const pivotNode = rotatingNode.right;
     rotatingNode.right = pivotNode.left;
 
@@ -169,7 +171,6 @@ export default class RedBlackTree {
     let nodeOriginalColor = nodeToBeDeleted.color;
 
     let nodeToBeFixed;
-    let minimumNodeRightChild;
     // case 1 left is NIL
     if (node.left == this.NIL) {
       nodeToBeFixed = node.right;
@@ -190,7 +191,7 @@ export default class RedBlackTree {
       nodeToBeFixed = minimumNodeInRightSubTree.right;
 
       // if the minimum node is the direct child of the node to be deleted
-      if (minimumNodeInRightSubTree.right.parent == node) {
+      if (minimumNodeInRightSubTree.parent == node) {
         nodeToBeFixed.parent = minimumNodeInRightSubTree;
       } else {
         this.transplant(
