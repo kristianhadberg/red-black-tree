@@ -9,11 +9,20 @@
 </head>
 <body>
     <h1>Red-black tree visualisation</h1>
-    <form id="insert-form">
-        <span>Enter a number to insert value into the tree</span>
-        <input type="number" name="number" value="" />
-        <input type="submit" value="Insert"></input>
-    </form>
+    <div id="input">
+        <form id="insert-form">
+            <span>Enter a number to insert value into the tree</span>
+            <input type="number" name="number" value="" />
+            <input type="submit" value="Insert"></input>
+        </form>
+
+        <form id="delete-form">
+            <span>Enter a number to delete value from the tree</span>
+            <input type="number" name="number" value="" />
+            <input type="submit" value="Delete"></input>
+        </form>
+    </div>
+
 
     <div class="tf-tree">
         <ul class="initial-ul">

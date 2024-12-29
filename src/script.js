@@ -5,6 +5,7 @@ init();
 
 function init() {
   const insertForm = document.querySelector("#insert-form");
+  const deleteForm = document.querySelector("#delete-form");
 
   insertForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -13,7 +14,30 @@ function init() {
     generateVisualTree();
   });
 
+  deleteForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const number = deleteForm.number.valueAsNumber;
+    tree.delete(number);
+    generateVisualTree();
+  });
+
   tree = new RedBlackTree();
+
+  /* tree.insert(12);
+  tree.insert(8);
+  tree.insert(15);
+  tree.insert(13);
+  tree.insert(23); */
+
+  /* tree.insert(12);
+  tree.insert(8);
+  tree.insert(15);
+  tree.insert(1);
+  tree.insert(9);
+  tree.insert(13);
+  tree.insert(23);
+  tree.insert(10); */
+
   tree.insert(8);
   tree.insert(5);
   tree.insert(15);
@@ -23,6 +47,8 @@ function init() {
   tree.insert(13);
   tree.insert(23);
   tree.insert(10);
+  tree.insert(27);
+  tree.insert(28);
 
   generateVisualTree();
 }
