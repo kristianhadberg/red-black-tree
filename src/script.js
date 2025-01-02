@@ -4,22 +4,7 @@ let tree;
 init();
 
 function init() {
-  const insertForm = document.querySelector("#insert-form");
-  const deleteForm = document.querySelector("#delete-form");
-
-  insertForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const number = insertForm.number.valueAsNumber;
-    tree.insert(number);
-    generateVisualTree();
-  });
-
-  deleteForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const number = deleteForm.number.valueAsNumber;
-    tree.delete(number);
-    generateVisualTree();
-  });
+  setupButtons();
 
   tree = new RedBlackTree();
 
@@ -103,4 +88,29 @@ function generateVisualTree() {
   if (rootLi) {
     initialUl.appendChild(rootLi);
   }
+}
+
+function setupButtons() {
+  const insertForm = document.querySelector("#insert-form");
+  const deleteForm = document.querySelector("#delete-form");
+  const deleteButton = document.querySelector("#clear-button");
+
+  insertForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const number = insertForm.number.valueAsNumber;
+    tree.insert(number);
+    generateVisualTree();
+  });
+
+  deleteForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const number = deleteForm.number.valueAsNumber;
+    tree.delete(number);
+    generateVisualTree();
+  });
+
+  deleteButton.addEventListener("click", () => {
+    tree.clear();
+    generateVisualTree();
+  });
 }

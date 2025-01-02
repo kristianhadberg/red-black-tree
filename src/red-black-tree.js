@@ -1,5 +1,4 @@
-// TODO remove export, currently just for test purposes
-export class Node {
+class Node {
   value = null;
   parent = null;
   color = "RED"; // Initialise all nodes as red nodes.
@@ -20,9 +19,10 @@ export default class RedBlackTree {
     this.root = this.NIL;
   }
 
+  /**
+   *  Rotating node is the pivotNodes parent node, and pivot node is the node that will become the new parent
+   */
   rotateLeft(rotatingNode) {
-    // x = rotating node
-    // y = pivotNode
     const pivotNode = rotatingNode.right;
     rotatingNode.right = pivotNode.left;
 
@@ -44,9 +44,9 @@ export default class RedBlackTree {
     rotatingNode.parent = pivotNode;
   }
 
-  /* 
-        Rotating node is the pivotNodes parent node, and pivot node is the node that will become the new parent
-    */
+  /**
+   *  Rotating node is the pivotNodes parent node, and pivot node is the node that will become the new parent
+   */
   rotateRight(rotatingNode) {
     const pivotNode = rotatingNode.left;
     rotatingNode.left = pivotNode.right;
@@ -213,6 +213,9 @@ export default class RedBlackTree {
     }
   }
 
+  /**
+   *  Function to rebalance the tree after deletion of an element
+   */
   deleteFixup(node) {
     while (node != this.root && node.color == "BLACK") {
       // if deleted node is left child
@@ -284,10 +287,10 @@ export default class RedBlackTree {
     node.color = "BLACK";
   }
 
-  /* 
-        Helper function to swap nodes within a subtree
-        Used for deleting nodes
-      */
+  /**
+   *  Helper function to swap nodes within a subtree
+   *  Used for deleting nodes
+   */
   transplant(firstNode, secondNode) {
     if (firstNode.parent == null) {
       // firstNode is root
@@ -300,9 +303,9 @@ export default class RedBlackTree {
     secondNode.parent = firstNode.parent;
   }
 
-  /* 
-        Find the lowest value in the given subtree
-      */
+  /**
+   *  Find the lowest value in the given subtree
+   */
   minimum(node) {
     while (node.left != this.NIL) {
       node = node.left;
@@ -310,9 +313,9 @@ export default class RedBlackTree {
     return node;
   }
 
-  /* 
-        Find a specific value in the tree
-      */
+  /**
+   *  Find a specific value in the tree and the node
+   */
   search(value) {
     let currentNode = this.root;
 
@@ -325,6 +328,13 @@ export default class RedBlackTree {
     }
 
     return currentNode;
+  }
+
+  /**
+   *  Clears the tree
+   */
+  clear() {
+    this.root = this.NIL;
   }
 
   print(node = this.root, depth = 0) {
@@ -344,7 +354,9 @@ export default class RedBlackTree {
     }
   }
 
-  // In order traversal through the tree
+  /**
+   *  In order traversal through the tree
+   */
   traverse(node = this.root) {
     if (node == this.NIL) {
       return;
