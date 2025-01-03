@@ -8,21 +8,6 @@ function init() {
 
   tree = new RedBlackTree();
 
-  /* tree.insert(12);
-  tree.insert(8);
-  tree.insert(15);
-  tree.insert(13);
-  tree.insert(23); */
-
-  /* tree.insert(12);
-  tree.insert(8);
-  tree.insert(15);
-  tree.insert(1);
-  tree.insert(9);
-  tree.insert(13);
-  tree.insert(23);
-  tree.insert(10); */
-
   tree.insert(8);
   tree.insert(5);
   tree.insert(15);
@@ -39,7 +24,6 @@ function init() {
 }
 
 function generateVisualTree() {
-  console.log(tree);
   if (tree.root == null) return;
 
   const initialUl = document.querySelector(".initial-ul");
@@ -98,6 +82,11 @@ function setupButtons() {
   insertForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const number = insertForm.number.valueAsNumber;
+
+    if (isNaN(number)) {
+      return;
+    }
+
     tree.insert(number);
     generateVisualTree();
   });
@@ -113,4 +102,13 @@ function setupButtons() {
     tree.clear();
     generateVisualTree();
   });
+}
+
+/**
+ * Sleep function taken from
+ * https://www.geeksforgeeks.org/what-is-the-javascript-version-of-sleep-method/
+ * Used to visualise the algorithm step-by-step
+ */
+function sleep(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
 }
