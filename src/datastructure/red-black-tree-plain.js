@@ -1,10 +1,8 @@
-import {
-  generateVisualTree,
-  getNodeElementById,
-  recolorElement,
-  sleepTimerMS,
-  sleep,
-} from "./script.js";
+/**
+ * Plain version of the red-black tree.
+ * Does not contain functions used for visualising the datastructure/algorithms used.
+ *
+ */
 
 class Node {
   value = null;
@@ -30,16 +28,9 @@ export default class RedBlackTree {
   /**
    *  Rotating node is the pivotNodes parent node, and pivot node is the node that will become the new parent
    */
-  async rotateLeft(rotatingNode) {
+  rotateLeft(rotatingNode) {
     const pivotNode = rotatingNode.right;
     rotatingNode.right = pivotNode.left;
-
-    const rotatingElement = getNodeElementById(rotatingNode.value);
-    const pivotElement = getNodeElementById(pivotNode.value);
-
-    recolorElement(rotatingElement, "rotating-node");
-    recolorElement(pivotElement, "pivot-node");
-    await sleep(sleepTimerMS);
 
     if (pivotNode.left != this.NIL) {
       pivotNode.left.parent = rotatingNode;
@@ -62,16 +53,9 @@ export default class RedBlackTree {
   /**
    *  Rotating node is the pivotNodes parent node, and pivot node is the node that will become the new parent
    */
-  async rotateRight(rotatingNode) {
+  rotateRight(rotatingNode) {
     const pivotNode = rotatingNode.left;
     rotatingNode.left = pivotNode.right;
-
-    const rotatingElement = getNodeElementById(rotatingNode.value);
-    const pivotElement = getNodeElementById(pivotNode.value);
-
-    recolorElement(rotatingElement, "rotating-node");
-    recolorElement(pivotElement, "pivot-node");
-    await sleep(sleepTimerMS);
 
     if (pivotNode.right != this.NIL) {
       pivotNode.right.parent = rotatingNode;
@@ -91,7 +75,7 @@ export default class RedBlackTree {
     rotatingNode.parent = pivotNode;
   }
 
-  async insert(value) {
+  insert(value) {
     const newNode = new Node(value);
     newNode.left = this.NIL;
     newNode.right = this.NIL;
@@ -125,68 +109,54 @@ export default class RedBlackTree {
       parent.right = newNode;
     }
 
-    generateVisualTree();
-    await this.insertFixup(newNode);
+    this.insertFixup(newNode);
   }
 
-  async insertFixup(violatingNode) {
+  insertFixup(violatingNode) {
+    // z = violating node
+    // y = uncle
     while (violatingNode.parent && violatingNode.parent.color == "RED") {
       // left side cases
       if (violatingNode.parent == violatingNode.parent.parent.left) {
         const uncle = violatingNode.parent.parent.right;
 
         if (uncle.color == "RED") {
-          await sleep(sleepTimerMS);
           // case 1
           violatingNode.parent.color = "BLACK";
           uncle.color = "BLACK";
           violatingNode.parent.parent.color = "RED";
-
-          generateVisualTree();
-
           violatingNode = violatingNode.parent.parent; // move the violation up the tree
         } else {
           if (violatingNode == violatingNode.parent.right) {
             // case 2
             violatingNode = violatingNode.parent;
-            await sleep(sleepTimerMS);
-            await this.rotateLeft(violatingNode);
-            generateVisualTree();
+            this.rotateLeft(violatingNode);
           }
-          await sleep(sleepTimerMS);
-
           // case 3 (always happens after case 2)
           violatingNode.parent.color = "BLACK";
           violatingNode.parent.parent.color = "RED";
-          await this.rotateRight(violatingNode.parent.parent);
+          this.rotateRight(violatingNode.parent.parent);
         }
       } else {
         // right side cases, same as the code above just the opposite side
         const uncle = violatingNode.parent.parent.left;
 
         if (uncle.color == "RED") {
-          await sleep(sleepTimerMS);
           // case 1
           violatingNode.parent.color = "BLACK";
           uncle.color = "BLACK";
           violatingNode.parent.parent.color = "RED";
-          generateVisualTree();
-
           violatingNode = violatingNode.parent.parent;
         } else {
           if (violatingNode == violatingNode.parent.left) {
             // case 2
             violatingNode = violatingNode.parent;
-            await sleep(sleepTimerMS);
-            await this.rotateRight(violatingNode);
-            generateVisualTree();
+            this.rotateRight(violatingNode);
           }
-          await sleep(sleepTimerMS);
-
           // case 3
           violatingNode.parent.color = "BLACK";
           violatingNode.parent.parent.color = "RED";
-          await this.rotateLeft(violatingNode.parent.parent);
+          this.rotateLeft(violatingNode.parent.parent);
         }
       }
       if (violatingNode == this.root) {
@@ -194,7 +164,6 @@ export default class RedBlackTree {
       }
     }
     this.root.color = "BLACK";
-    //generateVisualTree();
   }
 
   delete(value) {
@@ -220,9 +189,9 @@ export default class RedBlackTree {
       this.transplant(node, node.left);
     } else {
       /* 
-            case 3, neither are NIL
-            find minimum value in the node to be deleted's right sub tree 
-        */
+                case 3, neither are NIL
+                find minimum value in the node to be deleted's right sub tree 
+            */
       const minimumNodeInRightSubTree = this.minimum(node.right);
       nodeOriginalColor = minimumNodeInRightSubTree.color;
       nodeToBeFixed = minimumNodeInRightSubTree.right;

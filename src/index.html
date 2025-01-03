@@ -3,12 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/treeflex/dist/css/treeflex.css">
-    <link rel="stylesheet" href="style.css">
+    <!-- 
+        <link rel="stylesheet" href="https://unpkg.com/treeflex/dist/css/treeflex.css">
+        Had issues with unpkg being down, so i 'stole' the treeflex css
+        directly and put it locally in the project    
+    -->
+ <link rel="stylesheet" href="../treeflex.css">
+ <link rel="stylesheet" href="style.css">
     <title>Red-black tree</title>
 </head>
 <body>
     <h1>Red-black tree visualisation</h1>
+    <section id="top-section">
+
+        
     <div id="input">
         <form id="insert-form">
             <span>Enter a number to insert value into the tree</span>
@@ -22,11 +30,17 @@
             <input type="submit" value="Delete"></input>
         </form>
 
+        <form id="sleep-timer">
+            <span>Change sleep timer (tickrate)</span>
+            <input type="number" name="number" value="2000" />
+            <input type="submit" value="Set timer"></input>
+        </form>
+
         <button id="clear-button" type="button">Clear tree</button>
 
     </div>
 
-
+    </section>
     <div class="tf-tree">
         <ul class="initial-ul">
         </ul>

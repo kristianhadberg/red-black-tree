@@ -1,6 +1,7 @@
 import RedBlackTree from "./red-black-tree.js";
 
 let tree;
+export let sleepTimerMS = 2000;
 init();
 
 function init() {
@@ -16,14 +17,12 @@ function init() {
   tree.insert(9);
   tree.insert(13);
   tree.insert(23);
-  tree.insert(10);
-  tree.insert(27);
-  tree.insert(28);
-
-  generateVisualTree();
+  /* tree.insert(10);
+    tree.insert(27);
+  tree.insert(28); */
 }
 
-function generateVisualTree() {
+export function generateVisualTree() {
   if (tree.root == null) return;
 
   const initialUl = document.querySelector(".initial-ul");
@@ -36,6 +35,7 @@ function generateVisualTree() {
     const span = document.createElement("span");
     span.classList.add("tf-nc");
     span.innerHTML = `${node.value}`;
+    span.dataset.nodeId = node.value;
 
     // set css class for black/red
     if (node.color == "BLACK") {
@@ -77,9 +77,10 @@ function generateVisualTree() {
 function setupButtons() {
   const insertForm = document.querySelector("#insert-form");
   const deleteForm = document.querySelector("#delete-form");
-  const deleteButton = document.querySelector("#clear-button");
+  const timerForm = document.querySelector("#sleep-timer");
+  const clearButton = document.querySelector("#clear-button");
 
-  insertForm.addEventListener("submit", (e) => {
+  insertForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const number = insertForm.number.valueAsNumber;
 
@@ -87,7 +88,7 @@ function setupButtons() {
       return;
     }
 
-    tree.insert(number);
+    await tree.insert(number);
     generateVisualTree();
   });
 
@@ -98,10 +99,32 @@ function setupButtons() {
     generateVisualTree();
   });
 
-  deleteButton.addEventListener("click", () => {
+  timerForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const number = timerForm.number.valueAsNumber;
+
+    if (isNaN(number)) {
+      return;
+    }
+    sleepTimerMS = number;
+  });
+
+  clearButton.addEventListener("click", () => {
     tree.clear();
     generateVisualTree();
   });
+}
+
+/**
+ * Return DOM element for the node with the given id
+ * Id is just the value of the node, since its unique
+ */
+export function getNodeElementById(id) {
+  return document.querySelector(`[data-node-id="${id}"]`);
+}
+
+export function recolorElement(element, colorClass) {
+  element.classList.add(`${colorClass}`);
 }
 
 /**
@@ -109,6 +132,6 @@ function setupButtons() {
  * https://www.geeksforgeeks.org/what-is-the-javascript-version-of-sleep-method/
  * Used to visualise the algorithm step-by-step
  */
-function sleep(time) {
+export function sleep(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }

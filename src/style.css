@@ -1,3 +1,17 @@
+#top-section {
+    display: flex;
+}
+
+#rules {
+    margin-left: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.violating-node {
+    transform: scale(1.3)
+}
+
 .red {
     background-color: red;
 }
@@ -6,3 +20,14 @@
     background-color: black;
     color: white;
 }
+
+.rotating-node {
+    /* background-color: yellow; */
+    color: yellow;
+}
+
+.pivot-node {
+    /* background-color: green; */
+    color: green;
+}
+
